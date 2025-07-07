@@ -1,2 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
 
+/*navbar*/
+nav a.active{
+    color: #FFA7A6;
+
+}
+
+
+
+/*logOut*/
+
+.logOut{
+    color: #2D2B2B;
+}
