@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import HeaderComponent  from './components/shared/header/header.component';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent],
@@ -10,4 +11,5 @@ import HeaderComponent  from './components/shared/header/header.component';
 })
 export class AppComponent {
   title = 'cherry';
+
 }

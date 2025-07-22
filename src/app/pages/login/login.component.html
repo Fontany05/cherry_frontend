@@ -1,19 +1,43 @@
 <!-- component login -->
-<div class="relative flex min-h-screen text-gray-700 antialiased flex-col justify-center overflow-hidden bg-blue-50 py-6 sm:py-12">
-  <div class="relative py-3 sm:w-96 mx-auto text-center bg-white shadow-md rounded-lg">
-    <span class="text-2xl font-light">Login to your account</span>
+<div
+  class="relative flex min-h-screen text-gray-700 antialiased flex-col justify-center overflow-hidden bg-blue-100 py-6 sm:py-12"
+>
+  <div
+    class="relative py-3 sm:w-96 mx-auto py-6 text-center bg-white shadow-md rounded-lg p-4"
+  >
+    <span class="text-2xl font-semibold">Login to your account</span>
     <div class="mt-4 text-left">
       <div class="h-2 rounded-t-md"></div>
-      <div class="px-8 py-6 ">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="px-8 py-5">
         <label class="block font-semibold"> Email </label>
-        <input type="text" placeholder="Email" class="border w-full h-5 px-6 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md">
+        <input
+          formControlName="email"
+          type="text"
+          placeholder="Email"
+          class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md shadow-xl"
+        />
         <label class="block mt-3 font-semibold"> Password </label>
-        <input type="password" placeholder="Password" class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md">
-          <div class="flex justify-between items-baseline">
-            <button type="submit" class="mt-4 bg-red-300 py-2 px-6 rounded-md hover:bg-blue-100 text-gray-700 font-semibold">Login</button>
-            <a href="#" class="text-sm hover:underline">Forgot password?</a>
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+          class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md shadow-xl"
+        />
+        <div class="flex justify-between items-baseline py-2">
+          <button
+            type="submit"
+            class="mt-4 bg-red-300 py-1 px-6 rounded-md hover:bg-blue-100 text-gray-700 font-semibold"
+          >
+            Login
+          </button>
+          <a href="#" class="text-sm hover:underline">Forgot password?</a>
+        </div>
+        <div class="flex mt-6">
+          <a href="#" class="text-sm hover:underline"
+          [routerLink]="['/register']">Don't have an account? Create one</a
+          >
           </div>
-      </div>
-      
+      </form>
+    </div>
   </div>
 </div>

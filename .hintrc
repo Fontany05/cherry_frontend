@@ -26,6 +26,8 @@
           "text-align: -webkit-match-parent"
         ]
       }
-    ]
+    ],
+    "typescript-config/consistent-casing": "off",
+    "axe/forms": "off"
   }
 }

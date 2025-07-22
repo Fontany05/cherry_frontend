@@ -32,13 +32,13 @@
             class="text-white text-decoration-none me-2 text-sm"
             [routerLink]="['/register']"
           >
-            Crear cuenta |
+            Sign Up |
           </a>
           <a
             class="text-white text-decoration-none me-2 text-sm"
             [routerLink]="['/login']"
           >
-            Iniciar sesión
+            Log In
           </a>
         </div>
       </div>
@@ -53,7 +53,7 @@
   >
     <div *ngIf="isOpen" class="flex items-center flex-shrink-0 w-18">
       <a routerLink="">
-        <img src="logo_cherry.png" alt="Logo" width="150" height="100" />
+        <img src="logo_cherry.png" alt="Logo" class="logo"/>
       </a>
     </div>
     <div (click)="toggleMenu()" class="block lg:hidden">
@@ -82,7 +82,7 @@
   >
     <div class="text-md text-gray-950 lg:flex-grow">
       <a
-        [routerLink]="['/']"
+        [routerLink]="['/home']"
         [routerLinkActive]="['active']"
         class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300"
       >

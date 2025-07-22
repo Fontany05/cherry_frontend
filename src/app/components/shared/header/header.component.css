@@ -2,11 +2,16 @@
 /*navbar*/
 
 
+img.logo{
+    width: 300px;
+    height: 80px;
+
+}
+
 nav a.active{
     color: #FFA7A6;
 
 }
-
 
 
 /*logOut*/
