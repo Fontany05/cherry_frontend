@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 //import { Router } from '@angular/router'; // Asegúrate de importar Router si vas a navegar
-import { LoginData } from 'src/interfaces/auth.interfaces';
+import { LoginData } from 'src/interfaces/auth.interface';
 import { RouterLink } from '@angular/router';
 
 @Component({

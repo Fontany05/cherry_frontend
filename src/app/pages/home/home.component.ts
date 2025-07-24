@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import HeroComponent from 'src/app/components/shared/hero/hero.component';
-import ProductComponent from '../product/product.component';
+import HeroComponent from 'src/app/shared/hero/hero.component';
+
 
 @Component({
   selector: 'app-home',
-  imports: [ HeroComponent, ProductComponent],
+  imports: [ HeroComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

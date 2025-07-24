@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router'; // Para redirigir después del registro
-import { RegisterData } from 'src/interfaces/auth.interfaces';
+import { RegisterData } from 'src/interfaces/auth.interface';
 
 @Component({
   selector: 'app-register',
