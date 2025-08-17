@@ -14,15 +14,18 @@ export default class HeroComponent {
     {
       src: 'https://res.cloudinary.com/djgryqoma/image/upload/v1752876711/banner_img1_ikhck1.jpg',
       alt: 'Banner 1',
-      title: ''
+      title: '',
+      position: 'center top'
     },
     {
       src: 'https://res.cloudinary.com/djgryqoma/image/upload/v1752876711/banner_img3_j9ccv0.jpg',
-      alt: 'Banner 2'
+      alt: 'Banner 2',
+      position: 'center top' 
     },
     {
       src: 'https://res.cloudinary.com/djgryqoma/image/upload/v1752876711/banner_img2_rh4n3k.jpg',
-      alt: 'Banner 3'
+      alt: 'Banner 3',
+      position: 'center top' 
     }
   ];
 

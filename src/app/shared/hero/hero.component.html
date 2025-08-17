@@ -3,7 +3,7 @@
 <div class="w-full">
   <div class="relative">
     <!-- Carousel wrapper -->
-    <div class="overflow-hidden relative h-67 sm:h-67 xl:h-100 2xl:h-[500px]">
+    <div class="overflow-hidden relative h-72 sm:h-80 md:h-96 lg:h-[380px] xl:h-[380px] 2xl:h-[600px]">
       <!-- Slides -->
       @for (image of images; track image.src; let i = $index) {
         <div 
@@ -54,7 +54,7 @@
       type="button" 
       class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none"
       (click)="nextSlide()">
-      <span class="inline-flex justify-center items-center w-8 h-8 sm:w-10 sm:h-1">
+      <span class="inline-flex justify-center items-center w-8 h-8 sm:w-10 sm:h-10">
         <svg class="w-5 h-5 text-blue-200 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
