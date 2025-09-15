@@ -1,3 +1,6 @@
+# cherry_frontend
+Cherry un ecommerce de productos como maquillaje y skincare. En proceso de desarrollo!
+
 # Portafolio
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
