@@ -1,8 +1,10 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { finalize } from 'rxjs/operators';
-import { ProductData } from 'src/interfaces/product.inteface';
+import { finalize, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Product, ProductData } from 'src/interfaces/product.inteface';
+import { FilterSidebarInterface } from 'src/interfaces/filterSidebar.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +13,7 @@ export class ProductsService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/products`;
 
-  // Guardamos toda la estructura ProductData
   public products = signal<ProductData | null>(null);
-
-  // Estado de carga y error
   public loading = signal(false);
   public error = signal<string | null>(null);
 
@@ -22,25 +21,41 @@ export class ProductsService {
   readonly loading$ = this.loading.asReadonly();
   readonly error$ = this.error.asReadonly();
 
-  // Número de productos
   readonly productsCount = computed(() => this.products()?.data.length ?? 0);
 
-  // Método para obtener productos
-  getProducts() {
+  //metodo para obtener productos
+  getProductsObservable(): Observable<ProductData> {
     this.loading.set(true);
     this.error.set(null);
 
-    this.http.get<ProductData>(this.apiUrl)
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe({
-        next: (response) => {
-          // Guardar toda la respuesta en la señal
-          this.products.set(response);
-        },
-        error: (err) => {
-          console.error('Error al cargar productos:', err);
-          this.error.set('Error al cargar productos');
-        }
-      });
+    return this.http
+      .get<ProductData>(this.apiUrl)
+      .pipe(finalize(() => this.loading.set(false)));
+  }
+
+  //metodo para listar productos destacados(basado en la categoria sets)
+ getFeaturedProducts(): Observable<Product[]> {
+  return this.getProductsObservable().pipe(
+      map((response: ProductData) => 
+      response.data
+        .filter((p: Product) => p.categories === 'sets' && p.active === true)
+        .slice(0, 4)
+    )
+  );
+}
+
+  //metodo para cargar productos y actualizar el estado
+  loadProducts(): void {
+    this.getProductsObservable().subscribe({
+      next: (data) => {
+        // Actualiza la señal con los datos de los productos
+        this.products.set(data);
+      },
+      error: (err) => {
+        //Maneja el error y actualiza la señal de error
+        console.error('Error loading products:', err);
+        this.error.set('Failed to load products.');
+      },
+    });
   }
 }

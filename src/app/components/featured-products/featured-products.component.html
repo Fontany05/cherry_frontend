@@ -1,0 +1,17 @@
+<section class="featured-section">
+  <h2 class="featured-product-title">Featured Product</h2>
+  @if (loading) {
+    <div class="loading">
+      Cargando productos destacados...
+    </div>
+  }
+  
+  @if (!loading) {
+    <app-product-list 
+      [products]="featuredProducts"
+      [title]="'Featured Products'"
+      [showButtons]="false"
+      [showStars]="true">
+    </app-product-list>
+  }
+</section>

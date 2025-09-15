@@ -1,13 +1,15 @@
+
 export interface Product {
   _id: string; 
   name: string;
   description: string;
   price: number;
-  image?: string; 
-  brand?: string; 
-  cloudinary_id?: string; 
+  brand: string; 
+  image: string;
+  cloudinary_id: string;
   stock: number;
-  categories?: string; 
+  categories: string;
+  subcategory?: string;  
   featured: boolean; 
   active: boolean;
 }

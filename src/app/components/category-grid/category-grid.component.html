@@ -1,0 +1,22 @@
+<!-- components/category-grid/category-grid.component.html -->
+<div class="category-section">
+  <h2 class="category-title">Categories</h2>
+  
+  @if (isLoading) {
+    <div class="loading">
+      <p>Cargando categorías...</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <div class="category-grid">
+      @for (category of categories; track category.id) {
+        <button 
+          class="category-btn"
+          (click)="onCategoryClick(category)">
+          {{ category.name }}
+        </button>
+      }
+    </div>
+  }
+</div>

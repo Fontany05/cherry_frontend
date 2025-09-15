@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.featured-section {
+  margin: 2rem 0;
+  padding: 1rem;
+  
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.featured-product-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
+  margin-top: 3px;
+  text-align: center;
+}

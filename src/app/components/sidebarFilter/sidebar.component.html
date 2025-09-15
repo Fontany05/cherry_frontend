@@ -1,0 +1,56 @@
+<aside class="hidden lg:flex flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-gray-200 mt-20">
+  <div class="flex flex-col justify-between flex-1 mt-6">
+    <nav class="-mx-3 space-y-6">
+      
+      <div class="flex items-center justify-between px-3 mb-4">
+        @if (filterService.hasActiveFilters()) {
+          <button 
+            (click)="filterService.clearAllFilters()"
+            class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+            Limpiar
+          </button>
+        }
+      </div>
+
+      <div class="space-y-3">
+        <div class="px-3 py-2">
+          <span class="text-ml font-medium text-gray-900">Categories</span>
+        </div>
+
+        @for (category of filterService.filterState$().categories; track category.id) {
+          <div class="relative">
+            
+            <button
+              (click)="filterService.onCategoryClick(category.id)"
+              class="flex items-center justify-between w-full px-3 py-2 text-left text-sm font-medium transition-colors rounded-lg"
+              [class]="filterService.filterState$().appliedFilters.category === category.id 
+                ? 'bg-pink-100 text-red-300' 
+                : 'text-gray-800 hover:bg-gray-100'">
+              
+              <span>{{ category.name }}</span>
+              
+              @if (category.hasSubcategories) {
+                <i class="fa-solid fa-chevron-down w-4 h-4 transition-transform duration-200" [class.rotate-90]="filterService.filterState$().expandedCategory === category.id" fill="none"></i>
+              }
+            </button>
+
+            @if (category.hasSubcategories && filterService.filterState$().expandedCategory === category.id) {
+              <div class="ml-4 mt-2 space-y-1 border-gray-200 pl-2">
+                @for (subcategory of category.subcategories; track subcategory.id) {
+                  <button
+                    (click)="filterService.onSubcategoryClick(category.id, subcategory.id)"
+                    class="block w-full px-3 py-2 text-left text-sm rounded-lg transition-colors"
+                    [class]="(category.id === 'brands' && filterService.filterState$().appliedFilters.brand === subcategory.id) || (category.id !== 'brands' && filterService.filterState$().appliedFilters.subcategory === subcategory.id)
+                      ? 'bg-red-200 text-red-300 font-medium border border-pink-150'
+                      : 'text-gray-600 hover:bg-gray-100'">
+                    {{ subcategory.name }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </nav>
+  </div>
+</aside>

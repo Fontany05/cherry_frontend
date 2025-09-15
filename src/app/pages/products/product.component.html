@@ -1,4 +1,29 @@
-<!-- component products-->
-<section class="flex justify-center items-center min-h-screen p-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  <app-product-list />
+<section class="min-h-screen p-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="block lg:flex gap-6">
+
+    <aside class="hidden lg:block w-72">
+      <app-sidebar></app-sidebar>
+    </aside>
+
+    <main class="flex-1 w-full">
+      <div class="lg:hidden w-full">
+        <div class="flex items-center justify-end py-2">
+          <button 
+            (click)="filterService.openModal()" 
+            class="bg-red-200 text-white font-medium py-2 px-4 rounded-lg hover:bg-pink-100 transition-colors"
+          >
+            Filtrar
+          </button>
+        </div>
+        
+        @if (filterService.filterState$().isOpen) {
+          <app-mobile-filter
+            class="w-full"
+          ></app-mobile-filter>
+        }
+      </div>
+
+      <app-product-list [products]="filterService.filteredProducts$()"></app-product-list>
+    </main>
+  </div>
 </section>

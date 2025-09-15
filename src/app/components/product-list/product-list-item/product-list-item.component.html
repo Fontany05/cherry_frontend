@@ -1,5 +1,5 @@
 <!-- Product list item -->
-<div class="bg-white shadow-md overflow-hidden flex flex-col h-full">
+<div class="bg-white shadow-md overflow-hidden flex flex-col h-full mt-6">
   <!-- Imagen -->
   <div class="h-64 md:h-46 overflow-hidden bg-white">
     <img
@@ -12,9 +12,9 @@
   <!-- Contenido -->
   <div class="p-4 flex flex-col justify-between flex-grow">
     <h3
-      class="font-semibold text-lg md:text-xl tracking-tight text-gray-950 mb-2 line-clamp-2"
+      class="font-semibold text-sm md:text-lg tracking-tight text-gray-950 mb-2 line-clamp-2"
     >
-      {{ product.name }}
+      {{ product.brand}}-{{ product.name }}
     </h3>
 
     <!-- Precio y botón en columna -->
@@ -23,22 +23,31 @@
       <span class="text-xl md:text-2xl font-bold text-gray-950 mb-3"
         >{{ product.price | currency:'USD':'symbol':'1.2-2' }}</span
       >
+       <!-- R.Stars -->
+      @if (showStars) {
+      <div class="mb-3 text-yellow-400">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      }
       <!-- Botones lado a lado -->
+      @if (showButtons) { 
       <div class="flex items-center justify-between w-full">
         <!-- Botón Add to cart -->
         <a
           href="#"
-          class="bg-red-300 hover:bg-red-400 text-gray-950 font-medium px-4 py-2 rounded focus:outline-none focus:ring focus:ring-blue-200 text-sm md:text-base"
+          class="bg-red-300 hover:bg-red-200 text-gray-900 font-medium px-4 py-2 rounded focus:outline-none focus:ring focus:ring-blue-200 text-sm md:text-base"
           >Add to cart</a
         >
         <!-- Botón ver producto -->
-        <a 
-          href="#" 
-          class="text-gray-800 hover:text-gray-800 p-1"
-        >
+        <a href="#" class="text-gray-800 hover:text-gray-800 p-1">
           <i class="fa-solid fa-eye text-lg"></i>
         </a>
       </div>
+    }
     </div>
   </div>
 </div>

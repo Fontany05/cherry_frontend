@@ -1,10 +1,14 @@
 <div class="max-w-[1100px] w-full mx-auto">
-  <!-- Grid de productos -->
+  <h2 class="product-list-title">Products</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <!-- Recorre la lista de productos y pasa cada uno a product-list-item -->
+    @for (product of products; track product._id) {
     <app-product-list-item 
-      *ngFor="let product of products" 
-      [product]="product">
+      [product]="product"
+      [showStars]="showStars"
+      [showButtons]="showButtons">
     </app-product-list-item>
+    } @empty {
+      <p>No se encontraron productos.</p>
+    }
   </div>
 </div>
