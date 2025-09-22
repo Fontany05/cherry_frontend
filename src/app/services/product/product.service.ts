@@ -4,7 +4,6 @@ import { environment } from '@environments/environment';
 import { finalize, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Product, ProductData } from 'src/interfaces/product.inteface';
-import { FilterSidebarInterface } from 'src/interfaces/filterSidebar.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +32,31 @@ export class ProductsService {
       .pipe(finalize(() => this.loading.set(false)));
   }
 
-  //metodo para listar productos destacados(basado en la categoria sets)
- getFeaturedProducts(): Observable<Product[]> {
-  return this.getProductsObservable().pipe(
-      map((response: ProductData) => 
-      response.data
-        .filter((p: Product) => p.categories === 'sets' && p.active === true)
-        .slice(0, 4)
-    )
-  );
+  //metodo para obtener el producto por ID(para product-detail)
+ getProductDetailById(id: string): Observable<Product> {
+  this.loading.set(true);
+  this.error.set(null);
+  return this.http
+    .get<ProductData>(`${this.apiUrl}/${id}`)
+    .pipe(
+      map((resp) => {
+        const p = resp.data?.[0];
+        return p as Product;
+      }),
+      finalize(() => this.loading.set(false))
+    );
 }
+
+  //metodo para listar productos destacados(basado en la categoria sets)
+  getFeaturedProducts(): Observable<Product[]> {
+    return this.getProductsObservable().pipe(
+      map((response: ProductData) =>
+        response.data
+          .filter((p: Product) => p.categories === 'sets' && p.active === true)
+          .slice(0, 4)
+      )
+    );
+  }
 
   //metodo para cargar productos y actualizar el estado
   loadProducts(): void {
