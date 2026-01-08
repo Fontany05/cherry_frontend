@@ -12,7 +12,7 @@ import { MobileFilterComponent } from 'src/app/components/mobileFilter/mobileFil
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
-export default class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit {
 
   public filterService = inject(FilterService);
 

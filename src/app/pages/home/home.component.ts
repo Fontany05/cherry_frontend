@@ -6,6 +6,7 @@ import { FeaturedProductsComponent } from 'src/app/components/featured-products/
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [
     HeroComponent,
     StoreServicesComponent,
@@ -15,4 +16,4 @@ import { FeaturedProductsComponent } from 'src/app/components/featured-products/
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export default class HomeComponent {}
+export class HomeComponent {}

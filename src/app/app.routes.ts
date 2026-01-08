@@ -1,18 +1,51 @@
 import { Routes } from '@angular/router';
-import ContactComponent from './shared/contact/contact.component';
-import ProductComponent from './pages/products/product.component';
-import LoginComponent from './pages/login/login.component';
-import RegisterComponent from './pages/register/register.component';
-import HomeComponent from './pages/home/home.component';
-import ProductDetailComponent from './components/ product-detail/ product-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'products', component: ProductComponent },
-  { path: 'products/:id', component: ProductDetailComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./pages/products/product.component').then(
+        (m) => m.ProductComponent
+      ),
+  },
+  {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./components/product-detail/product-detail.component').then(
+        (m) => m.ProductDetailComponent
+      ),
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./shared/contact/contact.component').then(
+        (m) => m.ContactComponent
+      ),
+  },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then((m) => m.CartComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+  },
+
   { path: '**', redirectTo: '/home' },
 ];

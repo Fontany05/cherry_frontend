@@ -1,11 +1,7 @@
-<!-- home.component.html -->
-
-<!-- ✅ Carga inmediata (crítico) -->
 <app-hero/>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   
-  <!-- ✅ Carga inmediata (ligero) -->
   <app-store-services/>
   
   <!-- 🚀 Carga solo cuando aparece en pantalla -->
@@ -22,27 +18,30 @@
     <div class="text-center py-4 text-gray-600">Cargando categorías...</div>
   }
   
-  <!-- 🚀 Carga después de las categorías -->
+  <!-- 🚀 Featured Products con showButtons=false -->
   @defer (on viewport) {
     <app-featured-products/>
   } @placeholder {
-    <!-- Skeleton de productos -->
-    <div class="my-8">
-      <div class="bg-gray-300 h-8 w-48 rounded mb-6 animate-pulse"></div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Skeleton de productos destacados -->
+    <section class="my-8">
+      <div class="bg-gray-300 h-8 w-64 rounded mb-6 animate-pulse"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @for (item of [1,2,3,4]; track item) {
-          <div class="bg-gray-200 h-80 rounded-lg animate-pulse">
+          <div class="bg-gray-200 h-80 rounded-lg animate-pulse shadow-md">
             <div class="h-48 bg-gray-300 rounded-t-lg"></div>
-            <div class="p-4 space-y-2">
+            <div class="p-4 space-y-3">
               <div class="bg-gray-300 h-4 w-3/4 rounded"></div>
               <div class="bg-gray-300 h-6 w-1/2 rounded"></div>
             </div>
           </div>
         }
       </div>
-    </div>
+    </section>
   } @loading (minimum 500ms) {
-    <div class="text-center py-8 text-gray-600">Cargando productos destacados...</div>
+    <div class="text-center py-8 text-gray-600">
+      <i class="fas fa-spinner fa-spin mr-2"></i>
+      Cargando productos destacados...
+    </div>
   }
   
 </div>

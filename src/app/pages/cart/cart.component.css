@@ -1,0 +1,79 @@
+/* Contenedor del Resumen con fondo gris */
+.summary-box {
+    background-color: #f9f9f9;
+    padding: 2.5rem;
+    border-radius: 2px;
+}
+
+/* Selector de cantidad (Bloque Celeste) */
+.quantity-selector {
+    display: flex;
+    background-color: #d1e9f6; /* Celeste claro */
+}
+
+.quantity-selector button {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #4b5563;
+    transition: background-color 0.2s;
+}
+
+.quantity-selector button:hover {
+    background-color: #bbdef1;
+}
+
+.quantity-selector span {
+    width: 2.5rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+/* Botón CONTINUE (Rosa) */
+.btn-continue {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #ffadaa; /* Rosa pastel */
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+.btn-continue:hover {
+    background-color: #ff9490;
+}
+
+/* Botón Back to Products (Azul grisáceo) */
+.btn-back {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #b5d1d8; /* Azul/gris claro */
+    color: #4b5563;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.btn-back:hover {
+    background-color: #a0c4cd;
+}
+
+/* Tipografía Serif para títulos */
+.font-serif {
+    font-family: 'Playfair Display', serif;
+}

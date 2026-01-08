@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FilterService } from 'src/app/services/filter-service/filter.service';
 import type { CategoryForHome } from 'src/interfaces/filterSidebar.interface';
@@ -33,4 +33,5 @@ export class CategoryGridComponent implements OnInit {
     // Navegar a la página de productos filtrados
     this.router.navigate(['/products']);
   }
+  
  }

@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+
+
+ .buyNow_btn{
+  cursor: pointer;
+ }
+
+ .AddToCart_btn{
+  cursor: pointer;
+ }

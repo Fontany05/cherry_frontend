@@ -1,9 +1,13 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { finalize, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { Product, ProductData } from 'src/interfaces/product.inteface';
+import { finalize } from 'rxjs/operators';
+import { Observable, map } from 'rxjs';
+import {
+  Product,
+  ProductData,
+  ProductDetailResponse,
+} from 'src/interfaces/product.inteface';
 
 @Injectable({
   providedIn: 'root',
@@ -33,19 +37,28 @@ export class ProductsService {
   }
 
   //metodo para obtener el producto por ID(para product-detail)
- getProductDetailById(id: string): Observable<Product> {
-  this.loading.set(true);
-  this.error.set(null);
-  return this.http
-    .get<ProductData>(`${this.apiUrl}/${id}`)
-    .pipe(
-      map((resp) => {
-        const p = resp.data?.[0];
-        return p as Product;
-      }),
-      finalize(() => this.loading.set(false))
-    );
-}
+  getProductDetailById(id: string): Observable<Product> {
+    // 1. Empezamos la carga
+    this.loading.set(true);
+    this.error.set(null);
+
+    return this.http
+      .get<ProductDetailResponse>(`${this.apiUrl}/${id}`) // La URL es correcta: apiUrl es /products, y se le añade /ID
+      .pipe(
+        // 2. Finalizamos la carga (éxito o error)
+        finalize(() => this.loading.set(false)),
+        // 3. Manejamos el mapeo de la respuesta
+        map((response) => {
+          if (response.error || !response.data) {
+            throw new Error(
+              `Failed to load product with ID ${id}: ${
+                response.error ? 'Server error' : 'Data not found'
+              }`
+            );
+          }
+          return response.data;
+        }))
+  }
 
   //metodo para listar productos destacados(basado en la categoria sets)
   getFeaturedProducts(): Observable<Product[]> {

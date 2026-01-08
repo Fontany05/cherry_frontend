@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
-//import { Router } from '@angular/router'; // Asegúrate de importar Router si vas a navegar
+import { Router } from '@angular/router';
 import { LoginData } from 'src/interfaces/auth.interface';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'], 
 })
-export default class LoginComponent {
+export class LoginComponent {
   loginForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    //private router: Router // Añade Router si quieres redirigir después del login
+    private router: Router 
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -37,11 +38,7 @@ export default class LoginComponent {
 
       this.authService.signin(loginData).subscribe({
         next: response => {
-          console.log('Respuesta del backend:', response);
-          // Aquí puedes guardar el token, redirigir, etc.
-          // Ejemplo:
-          // localStorage.setItem('token', response.token);
-          // this.router.navigate(['/dashboard']);
+          this.router.navigate(['/products']);
         },
         error: error => {
           console.error('Error en login:', error);

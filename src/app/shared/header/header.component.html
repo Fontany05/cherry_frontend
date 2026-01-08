@@ -1,16 +1,22 @@
-<!-- header.component.html - Tu HTML adaptado para Angular 19 -->
-
 <nav class="flex items-center flex-wrap bg-gray-800 py-2 lg:px-12">
   <div class="@container text-white w-full">
     <div class="w-300 py-1 lg:px-12">
-      <!-- Container principal desktop -->
-      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center pl-2.5">
-        
+      <div
+        class="flex flex-col lg:flex-row lg:justify-between lg:items-center pl-2.5"
+      >
         <div class="flex items-center mb-2 lg:mb-0">
-          <a class="text-white" href="https://es-la.facebook.com/" target="_blank">
+          <a
+            class="text-white"
+            href="https://es-la.facebook.com/"
+            target="_blank"
+          >
             <i class="fab fa-facebook-f fa-sm fa-fw me-2"></i>
           </a>
-          <a class="text-white" href="https://www.instagram.com/" target="_blank">
+          <a
+            class="text-white"
+            href="https://www.instagram.com/"
+            target="_blank"
+          >
             <i class="fab fa-instagram fa-sm fa-fw me-2"></i>
           </a>
           <a class="text-white" href="https://twitter.com/" target="_blank">
@@ -20,85 +26,118 @@
             <i class="fa-brands fa-whatsapp fa-sm fa-fw"></i>
           </a>
         </div>
-        
+
         <div class="flex items-center">
-          <a class="text-white text-decoration-none me-2 text-sm" [routerLink]="['/register']">
+          @if (!isAuthenticated()) {
+          <a
+            class="text-white text-decoration-none me-2 text-sm"
+            [routerLink]="['/register']"
+          >
             Sign Up |
           </a>
-          <a class="text-white text-decoration-none me-2 text-sm" [routerLink]="['/login']">
+          <a
+            class="text-white text-decoration-none me-2 text-sm"
+            [routerLink]="['/login']"
+          >
             Log In
           </a>
+          } @else {
+          <span class="text-white text-sm font-light italic me-2">
+            Welcome Back!
+          </span>
+          }
         </div>
       </div>
     </div>
   </div>
 </nav>
 
-<nav class="flex items-center justify-between flex-wrap bg-white py-2 lg:px-12 shadow">
-  <div class="flex justify-between lg:w-auto w-full lg:border-b-0 pl-6 pr-2 border-solid border-b-2 border-gray-100 pb-5 lg:pb-0">
-    
+<nav
+  class="flex items-center justify-between flex-wrap bg-white py-2 lg:px-12 shadow"
+>
+  <div
+    class="flex justify-between lg:w-auto w-full lg:border-b-0 pl-6 pr-2 border-solid border-b-2 border-gray-100 pb-5 lg:pb-0"
+  >
     @if (isOpen) {
-      <div class="flex items-center flex-shrink-0 w-18">
-        <a routerLink="">
-          <img src="logo_cherry.png" alt="Logo" class="logo" />
-        </a>
-      </div>
+    <div class="flex items-center flex-shrink-0 w-18">
+      <a routerLink="">
+        <img src="logo_cherry.png" alt="Logo" class="logo" />
+      </a>
+    </div>
     }
 
     <div (click)="toggleMenu()" class="block lg:hidden">
       <button
         id="nav"
-        class="flex items-center px-3 py-2 border-2 rounded text-gray-950 border-gray-950 hover:text-red-300 hover:border-red-300">
+        class="flex items-center px-3 py-2 border-2 rounded text-gray-950 border-gray-950 hover:text-red-300 hover:border-red-300"
+      >
         <i class="fas fa-bars text-sm"></i>
       </button>
     </div>
   </div>
-  
+
   <div
     [class.hidden]="!isMenuOpen"
     [class.block]="isMenuOpen"
-    class="menu w-full lg:block flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8 text-center">
-    
+    class="menu w-full lg:block flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8 text-center"
+  >
     <div class="text-md text-gray-950 lg:flex-grow">
       <a
         [routerLink]="['/home']"
         [routerLinkActive]="['active']"
-        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300">
+        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300"
+      >
         Home
       </a>
       <a
         [routerLink]="['/products']"
-        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300">
+        [routerLinkActive]="['active']"
+        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300"
+      >
         Products
       </a>
       <a
         [routerLink]="['/contact']"
-        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300">
+        [routerLinkActive]="['active']"
+        class="block mt-4 lg:inline-block lg:mt-0 px-4 py-2 rounded mr-2 ml-6 hover:text-red-300"
+      >
         Contact
       </a>
     </div>
-    
-    <!-- Search -->
+
     <div class="relative mx-auto text-gray-600 lg:block hidden">
       <input
         class="border-1 border-gray-300 bg-white h-9 pl-2 pr-8 rounded-3xl text-sm focus:outline-none"
         type="search"
         name="search"
-        placeholder="Search" />
+        placeholder="Search"
+      />
       <button
         type="submit"
-        class="absolute right-2 top-1/2 transform -translate-y-1/2">
+        class="absolute right-2 top-1/2 transform -translate-y-1/2"
+      >
         <i class="fas fa-search text-red-300 text-sm"></i>
       </button>
     </div>
-    
-    <!--Cart-->
-    <div class="relative mx-auto p-2 text-red-300 lg:block">
-      <a href="#"><i class="fa-solid fa-cart-plus text-lg"></i></a>
-    </div>
 
+    <div class="relative mx-auto p-2 text-red-300 lg:block">
+      <a (click)="goToCart()" class="cursor-pointer relative inline-block p-1">
+        <i class="fa-solid fa-cart-plus text-lg"></i>
+        @if (cartCount() > 0) {
+        <span
+          class="absolute -top-1 -right-2 bg-pink-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center"
+        >
+          {{ cartCount() }}
+        </span>
+        }
+      </a>
+    </div>
     <div class="relative mx-auto p-2 text-red-300 lg:block logOut">
-      <a href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      @if (isAuthenticated()) {
+      <a (click)="logout()" class="cursor-pointer hover:text-red-500">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </a>
+      }
     </div>
   </div>
 </nav>

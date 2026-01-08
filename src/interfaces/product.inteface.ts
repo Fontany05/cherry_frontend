@@ -14,7 +14,14 @@ export interface Product {
   active: boolean;
 }
 
+//all products
 export interface ProductData {
   error: boolean; 
   data: Product[]; 
+}
+
+//product by id
+export interface ProductDetailResponse {
+  error: boolean; 
+  data: Product; 
 }

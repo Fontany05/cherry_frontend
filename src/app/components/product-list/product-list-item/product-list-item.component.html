@@ -36,16 +36,17 @@
       <!-- Botones lado a lado -->
       @if (showButtons) { 
       <div class="flex items-center justify-between w-full">
-        <!-- Botón Add to cart -->
-        <a
-          href="#"
+        <button
+          (click)="onAddToCart($event)"
           class="bg-red-300 hover:bg-red-200 text-gray-900 font-medium px-4 py-2 rounded focus:outline-none focus:ring focus:ring-blue-200 text-sm md:text-base"
-          >Add to cart</a
+          >Add to cart</button
         >
-        <!-- Botón ver producto -->
-        <a href="#" class="text-gray-800 hover:text-gray-800 p-1">
+        <button 
+          (click)="onViewDetail(); $event.stopPropagation()" 
+          class="text-gray-800 hover:text-gray-800 p-1"
+          title="Ver detalle">
           <i class="fa-solid fa-eye text-lg"></i>
-        </a>
+        </button>
       </div>
     }
     </div>
