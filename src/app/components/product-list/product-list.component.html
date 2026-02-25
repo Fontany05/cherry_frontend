@@ -4,10 +4,37 @@
   } @else {
     <h2 class="product-list-title">Products</h2>
   }
+
+  @if (showConfirmation()) {
+    <div class="mb-6 p-4 bg-white border border-gray-200 shadow-sm flex items-center justify-between animate-in fade-in slide-in-from-top duration-300">
+      <div class="flex items-center gap-4">
+        <div class="bg-green-100 text-green-600 p-2 rounded-full">
+          <i class="fas fa-check text-xs"></i>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <img [src]="addedProduct()?.image" class="w-10 h-10 object-cover border border-gray-100">
+          <div>
+            <p class="text-xs font-bold text-gray-900 leading-none mb-1 uppercase tracking-tighter italic">
+              Added to Cart!
+            </p>
+            <p class="text-[11px] text-gray-500">{{ addedProduct()?.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button [routerLink]="['/cart']" class="text-[10px] font-bold uppercase tracking-widest text-pink-600 hover:text-pink-700">
+          View Cart
+        </button>
+        <button (click)="continueShopping()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-xs"></i>
+        </button>
+      </div>
+    </div>
+  }
   
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-  >
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     @for (product of products(); track product._id) {
       <app-product-list-item
         [product]="product"

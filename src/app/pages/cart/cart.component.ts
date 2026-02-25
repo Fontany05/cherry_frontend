@@ -34,39 +34,53 @@ export class CartComponent implements OnInit {
 
   loadCart(): void {
     const userId = this.authService.userId();
-    if (userId) {
+
+    if (userId && userId !== 'null') {
+      // Si hay usuario, pedimos al servidor
       this.store.dispatch(CartActions.loadCart({ userId }));
+    } else {
+      // SI ES ANÓNIMO: Buscamos en el bolsillo del navegador
+      const savedCart = localStorage.getItem('cart_local');
+      if (savedCart) {
+        this.store.dispatch(
+          CartActions.loadCartSuccess({ cart: JSON.parse(savedCart) })
+        );
+      }
     }
   }
 
   increaseQuantity(item: CartItem): void {
+    // Enviamos el ._id que es lo que espera la Action
     this.store.dispatch(
-      CartActions.incrementQuantity({ productId: item.productId })
+      CartActions.incrementQuantity({ productId: item.productId._id })
     );
   }
 
   decreaseQuantity(item: CartItem): void {
     if (item.quantity > 1) {
       this.store.dispatch(
-        CartActions.decrementQuantity({ productId: item.productId })
+        CartActions.decrementQuantity({ productId: item.productId._id })
       );
     } else {
-      this.removeProduct(item.productId);
+      // Si es 1, llamamos a borrar pasando el string del ID
+      this.removeProduct(item.productId._id);
     }
   }
 
   removeProduct(productId: string): void {
+    // Aquí ya recibimos el string desde el HTML o desde decreaseQuantity
     this.store.dispatch(CartActions.removeItem({ productId }));
   }
-
-  clearCart(): void {
-    // Solo disparamos la acción. El Effect y el Reducer hacen el resto.
-    if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-      this.store.dispatch(CartActions.clearCart());
-    }
-  }
+ 
 
   goToCheckout(): void {
     this.router.navigate(['/checkout']);
   }
+
+   //chequear carro, si esta vacio
+  get isCartEmpty(): boolean {
+  const cart = this.cart();
+  return !cart || cart.items.length === 0;
+}
+
 }

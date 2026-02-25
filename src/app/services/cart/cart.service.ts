@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
@@ -9,26 +9,34 @@ export class CartService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/carts`;
 
-
-  getCart(userId: string): Observable<CartResponse> {
-    return this.http.get<CartResponse>(`${this.apiUrl}/${userId}`);
-  }
-
-  // Este método servirá tanto para añadir como para actualizar cantidad
-  updateQuantity(userId: string, productId: string, quantity: number): Observable<CartResponse> {
-    return this.http.put<CartResponse>(`${this.apiUrl}/${userId}/update`, {
-      productId,
-      quantity,
+  // Obtener carrito 
+  getCart(): Observable<CartResponse> {
+    return this.http.get<CartResponse>(`${this.apiUrl}`, {
+      withCredentials: true 
     });
   }
 
-  removeFromCart(userId: string, productId: string): Observable<CartResponse> {
-    return this.http.delete<CartResponse>(`${this.apiUrl}/${userId}/remove`, {
+  // 2. Actualizar cantidad e
+  updateQuantity(productId: string, quantity: number): Observable<CartResponse> {
+    return this.http.put<CartResponse>(
+      `${this.apiUrl}/update`, 
+      { productId, quantity }, 
+      { withCredentials: true }  
+    );
+  }
+
+  // Eliminar producto 
+  removeFromCart(productId: string): Observable<CartResponse> {
+    return this.http.delete<CartResponse>(`${this.apiUrl}/remove`, {
       body: { productId },
+      withCredentials: true
     });
   }
 
-  clearCart(userId: string): Observable<CartResponse> {
-    return this.http.delete<CartResponse>(`${this.apiUrl}/${userId}/clear`);
+  // Vaciar carrito 
+  clearCart(): Observable<CartResponse> {
+    return this.http.delete<CartResponse>(`${this.apiUrl}/clear`, {
+      withCredentials: true
+    });
   }
 }

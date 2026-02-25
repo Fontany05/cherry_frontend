@@ -12,7 +12,7 @@ import * as CartActions from 'src/app/store/cart/cart.actions';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css',
+  styleUrls: ['./product-detail.component.css'],
 })
 export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -24,6 +24,7 @@ export class ProductDetailComponent implements OnInit {
   
   // Estado para controlar si mostramos la confirmación (si lo usabas antes)
   public showConfirmation = signal(false);
+  addedProduct = signal<Product | null>(null);
 
   public cart = this.store.selectSignal(selectCartData);
 
@@ -52,24 +53,27 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  onAddToCart() {
-    const currentProduct = this.product();
-    
-    if (currentProduct) {
-      // 1. DISPARAR LA ACCIÓN AL STORE
-      this.store.dispatch(CartActions.addItem({ 
-        product: currentProduct, 
-        quantity: 1 
-      }));
+ onAddToCart() {
+  const currentProduct = this.product();
+  
+  if (currentProduct) {
+    // Solo disparamos la acción. 
+    // Si es anónimo, el Reducer actualiza el estado al instante.
+    this.store.dispatch(CartActions.addItem({ 
+      product: currentProduct, 
+      quantity: 1 
+    }));
 
-      alert(`${currentProduct.name} ha sido añadido al carrito`);
-      this.showConfirmation.set(true);
+    // Mostramos tu mensaje visual personalizado
+    this.showConfirmation.set(true);
 
-      // Opcional: Ocultar el mensaje automáticamente tras 3 segundos
-      setTimeout(() => this.showConfirmation.set(false), 3000);
-    }
+    // Auto-ocultar tras 3 segundos
+    setTimeout(() => this.showConfirmation.set(false), 3000);
   }
-  continueShopping() {
+}
+
+continueShopping(): void {
     this.showConfirmation.set(false);
   }
+  
 }

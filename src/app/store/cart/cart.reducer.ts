@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as CartActions from './cart.actions';
-import { Cart } from 'src/interfaces/cart.interface';
+import { Cart, CartItem } from 'src/interfaces/cart.interface';
 
 export interface CartState {
   cart: Cart | null;
@@ -8,18 +8,26 @@ export interface CartState {
   error: string | null;
 }
 
-// Función para recuperar datos del LocalStorage al arrancar
+// Objeto base para tipado estricto
+const emptyCart: Cart = {
+  _id: '',
+  userId: '',
+  items: [],
+  subtotal: 0,
+  shippingCost: 0,
+  total: 0,
+};
+
 const getInitialCart = (): Cart => {
   const saved = localStorage.getItem('shopping_cart');
   if (saved) {
     try {
       return JSON.parse(saved);
     } catch (e) {
-      return { items: [], total: 0 } as any;
+      return emptyCart;
     }
   }
-  // Retornamos un objeto que cumpla mínimamente con la interfaz usando 'as any'
-  return { items: [], total: 0 } as any;
+  return emptyCart;
 };
 
 export const initialState: CartState = {
@@ -31,27 +39,22 @@ export const initialState: CartState = {
 export const cartReducer = createReducer(
   initialState,
 
-  // --- CARGAR CARRITO (Desde la API) ---
-  on(CartActions.loadCart, (state) => ({
-    ...state,
-    loading: true,
-  })),
+  on(CartActions.loadCart, (state) => ({ ...state, loading: true })),
 
   on(CartActions.loadCartSuccess, (state, { cart }) => {
     localStorage.setItem('shopping_cart', JSON.stringify(cart));
     return { ...state, cart, loading: false };
   }),
 
-  // --- AGREGAR PRODUCTO (Híbrido) ---
+  // --- AGREGAR PRODUCTO (Maneja el objeto productId) ---
   on(CartActions.addItem, (state, { product, quantity }) => {
-    const currentCart = state.cart || { items: [], total: 0 };
-    
-    // Buscamos si el producto ya existe
+    const currentCart = state.cart || emptyCart;
+
     const existingItemIndex = currentCart.items.findIndex(
-      (item) => item._id === product._id || item.productId === product._id
+      (item) => item.productId._id === product._id
     );
 
-    let updatedItems;
+    let updatedItems: CartItem[];
 
     if (existingItemIndex > -1) {
       updatedItems = currentCart.items.map((item, index) =>
@@ -60,44 +63,89 @@ export const cartReducer = createReducer(
           : item
       );
     } else {
-      // IMPORTANTE: Mapeamos 'productId' para cumplir con tu interfaz CartItem
       updatedItems = [
         ...currentCart.items,
         {
-          ...product,
-          productId: product._id, // Requerido por tu interfaz
-          quantity: quantity
+          productId: {
+            _id: product._id,
+            name: product.name,
+            brand: product.brand,
+            image: product.image,
+          },
+          price: product.price,
+          quantity: quantity,
         },
       ];
     }
 
-    const updatedTotal = updatedItems.reduce(
+    const subtotal = updatedItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
 
-    // Creamos el objeto Cart con las propiedades mínimas que pide tu interfaz
     const updatedCart: Cart = {
-      ...currentCart, // Mantenemos IDs o userId si existieran
+      ...currentCart,
       items: updatedItems,
-      total: updatedTotal,
-      subtotal: updatedTotal,   // Requerido por tu interfaz
-      shippingCost: 0,          // Requerido por tu interfaz
-    } as any;
+      subtotal: subtotal,
+      total: subtotal + (currentCart.shippingCost || 0),
+    };
 
     localStorage.setItem('shopping_cart', JSON.stringify(updatedCart));
-
-    return {
-      ...state,
-      cart: updatedCart,
-      loading: false,
-    };
+    return { ...state, cart: updatedCart, loading: false };
   }),
 
-  // --- ÉXITO AL AGREGAR (Sincronización con API) ---
-  on(CartActions.addItemSuccess, (state, { cart }) => {
-    localStorage.setItem('shopping_cart', JSON.stringify(cart));
-    return { ...state, cart, loading: false };
+  // --- INCREMENTAR CANTIDAD (Botón +) ---
+  on(CartActions.incrementQuantity, (state, { productId }) => {
+    if (!state.cart) return state;
+
+    const updatedItems = state.cart.items.map((item) =>
+      item.productId._id === productId
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+
+    const subtotal = updatedItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    const updatedCart: Cart = {
+      ...state.cart,
+      items: updatedItems,
+      subtotal: subtotal,
+      total: subtotal + (state.cart.shippingCost || 0),
+    };
+
+    localStorage.setItem('shopping_cart', JSON.stringify(updatedCart));
+    return { ...state, cart: updatedCart };
+  }),
+
+  // --- DECREMENTAR CANTIDAD (Botón -) ---
+  on(CartActions.decrementQuantity, (state, { productId }) => {
+    if (!state.cart) return state;
+
+    const updatedItems = state.cart.items.map((item) => {
+      if (item.productId._id === productId) {
+        // Restar pero nunca menos de 1
+        return { ...item, quantity: Math.max(item.quantity - 1, 1) };
+      }
+      return item;
+    });
+
+    const subtotal = updatedItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    const updatedCart: Cart = {
+      ...state.cart,
+      items: updatedItems,
+      subtotal,
+      total: subtotal + (state.cart.shippingCost || 0),
+    };
+
+    localStorage.setItem('shopping_cart', JSON.stringify(updatedCart));
+    return { ...state, cart: updatedCart };
   }),
 
   // --- ELIMINAR PRODUCTO ---
@@ -105,32 +153,28 @@ export const cartReducer = createReducer(
     if (!state.cart) return state;
 
     const updatedItems = state.cart.items.filter(
-      (item) => item._id !== productId && item.productId !== productId
+      (item) => item.productId._id !== productId
     );
-    
-    const updatedTotal = updatedItems.reduce(
+
+    const subtotal = updatedItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
 
-    const updatedCart = {
+    const updatedCart: Cart = {
       ...state.cart,
       items: updatedItems,
-      total: updatedTotal,
-      subtotal: updatedTotal
-    } as any;
+      subtotal: subtotal,
+      total: subtotal + (state.cart.shippingCost || 0),
+    };
 
     localStorage.setItem('shopping_cart', JSON.stringify(updatedCart));
     return { ...state, cart: updatedCart };
   }),
-  
 
-  // --- VACIAR TODO ---
+  // --- VACIAR CARRITO ---
   on(CartActions.clearCart, (state) => {
     localStorage.removeItem('shopping_cart');
-    return {
-      ...state,
-      cart: { items: [], total: 0 } as any,
-    };
+    return { ...state, cart: emptyCart };
   })
 );
