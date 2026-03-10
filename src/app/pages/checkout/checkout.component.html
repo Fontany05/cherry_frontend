@@ -1,0 +1,286 @@
+<div
+  class="container mx-auto p-4 md:p-8 max-w-4xl animate-in fade-in duration-500"
+>
+  <!-- STEPPER -->
+  <div class="flex items-center justify-center mb-12">
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2">
+        <div
+          [class]="currentStep() >= 1 ? 'bg-pink-400 text-white' : 'bg-gray-200 text-gray-500'"
+          class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+        >
+          1
+        </div>
+        <span class="text-xs text-gray-600 uppercase tracking-wide">Envío</span>
+      </div>
+      <div class="w-12 h-px bg-gray-300 mx-2"></div>
+      <div class="flex items-center gap-2">
+        <div
+          [class]="currentStep() >= 2 ? 'bg-pink-400 text-white' : 'bg-gray-200 text-gray-500'"
+          class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+        >
+          2
+        </div>
+        <span class="text-xs text-gray-600 uppercase tracking-wide">Pago</span>
+      </div>
+      <div class="w-12 h-px bg-gray-300 mx-2"></div>
+      <div class="flex items-center gap-2">
+        <div
+          [class]="currentStep() >= 3 ? 'bg-pink-400 text-white' : 'bg-gray-200 text-gray-500'"
+          class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+        >
+          3
+        </div>
+        <span class="text-xs text-gray-600 uppercase tracking-wide"
+          >Confirmación</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 1: DIRECCIÓN DE ENVÍO + RESUMEN -->
+  @if (currentStep() === 1) {
+  <div class="flex flex-col lg:flex-row gap-12">
+    <div class="w-full lg:w-2/3">
+      <h2 class="text-2xl font-serif italic text-gray-800 mb-8">
+        Dirección de envío
+      </h2>
+      <form [formGroup]="shippingForm" class="space-y-4">
+        <div>
+          <label class="text-xs uppercase tracking-wide text-gray-600"
+            >Nombre completo</label
+          >
+          <input
+            formControlName="fullName"
+            type="text"
+            class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+          />
+          @if (shippingForm.get('fullName')?.invalid &&
+          shippingForm.get('fullName')?.touched) {
+          <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="text-xs uppercase tracking-wide text-gray-600"
+            >Dirección</label
+          >
+          <input
+            formControlName="address"
+            type="text"
+            class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+          />
+          @if (shippingForm.get('address')?.invalid &&
+          shippingForm.get('address')?.touched) {
+          <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="text-xs uppercase tracking-wide text-gray-600"
+            >Teléfono</label
+          >
+          <input
+            formControlName="phone"
+            type="text"
+            class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+          />
+          @if (shippingForm.get('phone')?.invalid &&
+          shippingForm.get('phone')?.touched) {
+          <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs uppercase tracking-wide text-gray-600"
+              >Ciudad</label
+            >
+            <input
+              formControlName="city"
+              type="text"
+              class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            />
+            @if (shippingForm.get('city')?.invalid &&
+            shippingForm.get('city')?.touched) {
+            <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+            }
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-wide text-gray-600"
+              >Provincia</label
+            >
+            <input
+              formControlName="state"
+              type="text"
+              class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs uppercase tracking-wide text-gray-600"
+              >Código Postal</label
+            >
+            <input
+              formControlName="zipCode"
+              type="text"
+              class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            />
+            @if (shippingForm.get('zipCode')?.invalid &&
+            shippingForm.get('zipCode')?.touched) {
+            <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+            }
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-wide text-gray-600"
+              >País</label
+            >
+            <input
+              formControlName="country"
+              type="text"
+              class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            />
+            @if (shippingForm.get('country')?.invalid &&
+            shippingForm.get('country')?.touched) {
+            <p class="text-red-400 text-xs mt-1">Campo requerido</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs uppercase tracking-wide text-gray-600"
+            >Notas (opcional)</label
+          >
+          <textarea
+            formControlName="notes"
+            placeholder="Instrucciones de entrega..."
+            class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300 resize-none h-20"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+
+    <!-- Resumen -->
+    <div class="w-full lg:w-1/3">
+      <div class="bg-[#F6F6F6] p-8">
+        <h2 class="text-xl font-serif text-gray-800 mb-6">Resumen</h2>
+        <div class="space-y-3 mb-6">
+          @for (item of cart()?.items; track $index) {
+          <div class="flex justify-between text-xs text-gray-600">
+            <span>{{ item.productId.name }} x{{ item.quantity }}</span>
+            <span>US$ {{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+          </div>
+          }
+        </div>
+        <div class="border-t border-gray-300 pt-4 space-y-2">
+          <div class="flex justify-between text-xs text-gray-600 uppercase">
+            <span>Subtotal</span>
+            <span>US$ {{ cart()?.subtotal | number:'1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-xs text-gray-600 uppercase">
+            <span>Envío</span>
+            <span>US$ {{ cart()?.shippingCost | number:'1.2-2' }}</span>
+          </div>
+          <div
+            class="flex justify-between text-sm font-bold text-gray-800 uppercase pt-2"
+          >
+            <span>Total</span>
+            <span>US$ {{ cart()?.total | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <button
+          (click)="goToPayment()"
+          [disabled]="loading()"
+          class="w-full mt-8 bg-[#FFADAD] text-xs text-gray-600 font-bold uppercase tracking-widest py-3 hover:bg-[#ff9494] transition-colors disabled:opacity-50"
+        >
+          {{ loading() ? 'Procesando...' : 'CONTINUAR AL PAGO' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- PASO 2: FORMULARIO DE TARJETA -->
+  @if (currentStep() === 2) {
+  <div class="flex flex-col lg:flex-row gap-12">
+    <div class="w-full lg:w-2/3">
+      <h2 class="text-2xl font-serif italic text-gray-800 mb-8">
+        Datos de pago
+      </h2>
+
+      @if (error()) {
+      <div
+        class="bg-red-50 border border-red-200 text-red-600 text-xs p-3 mb-4"
+      >
+        {{ error() }}
+      </div>
+      }
+
+      <div class="border border-gray-300 p-4 mb-6">
+        <label class="text-xs uppercase tracking-wide text-gray-600 block mb-3"
+          >Tarjeta de crédito/débito</label
+        >
+        <div id="card-element"></div>
+      </div>
+
+      <div class="flex gap-4">
+        <button
+          (click)="goBack()"
+          class="bg-[#ADCFE1] text-xs text-gray-600 font-serif italic py-3 px-8 hover:bg-[#99bfd4] transition-colors"
+        >
+          Volver
+        </button>
+        <button
+          (click)="confirmPayment()"
+          [disabled]="loading()"
+          class="flex-1 bg-[#FFADAD] text-xs text-gray-600 font-bold uppercase tracking-widest py-3 hover:bg-[#ff9494] transition-colors disabled:opacity-50"
+        >
+          {{ loading() ? 'Procesando...' : 'CONFIRMAR PAGO' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-1/3">
+      <div class="bg-[#F6F6F6] p-8">
+        <h2 class="text-xl font-serif text-gray-800 mb-6">Resumen</h2>
+        <div class="border-t border-gray-300 pt-4">
+          <div
+            class="flex justify-between text-sm font-bold text-gray-800 uppercase"
+          >
+            <span>Total</span>
+            <span>US$ {{ cart()?.total | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- PASO 3: CONFIRMACIÓN -->
+  @if (currentStep() === 3) {
+  <div
+    class="flex flex-col items-center justify-center min-h-[400px] text-center"
+  >
+    <div class="text-pink-400 mb-6">
+      <i class="fas fa-check-circle text-6xl"></i>
+    </div>
+    <h2 class="text-3xl font-serif italic text-gray-800 mb-4">
+      ¡Pago exitoso!
+    </h2>
+    <p class="text-gray-500 text-sm mb-2">
+      Tu orden fue procesada correctamente.
+    </p>
+    @if (orderId()) {
+    <p class="text-gray-400 text-xs mb-8">Orden ID: {{ orderId() }}</p>
+    }
+    <button
+      (click)="goToProducts()"
+      class="bg-[#FFADAD] text-xs text-gray-600 font-bold uppercase tracking-widest py-3 px-8 hover:bg-[#ff9494] transition-colors"
+    >
+      SEGUIR COMPRANDO
+    </button>
+  </div>
+  }
+</div>

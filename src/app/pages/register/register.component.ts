@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { RouterLink } from '@angular/router'; 
+import { Router, RouterLink } from '@angular/router';
 import { RegisterData } from 'src/interfaces/auth.interface';
+import { Store } from '@ngrx/store';
+import * as CartActions from 'src/app/store/cart/cart.actions';
 
 @Component({
   selector: 'app-register',
@@ -13,11 +20,12 @@ import { RegisterData } from 'src/interfaces/auth.interface';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  private store = inject(Store);
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    //private router: Router // Para navegación
+    private router: Router,
   ) {
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required]],
@@ -30,15 +38,14 @@ export class RegisterComponent {
 
   onRegister() {
     if (this.registerForm.valid) {
-      const { fullName, email, telephone, password, confirmPassword } = this.registerForm.value;
+      const { fullName, email, telephone, password, confirmPassword } =
+        this.registerForm.value;
 
-      // Validar que las contraseñas coincidan
       if (password !== confirmPassword) {
         alert('Las contraseñas no coinciden');
         return;
       }
 
-      // Crear objeto tipado con la interfaz
       const registerData: RegisterData = {
         fullName,
         email,
@@ -47,17 +54,16 @@ export class RegisterComponent {
       };
 
       this.authService.signup(registerData).subscribe({
-        next: response => {
-          console.log('Respuesta del backend:', response);
-          // Aquí puedes guardar token o redirigir
-          // Ejemplo:
-          // localStorage.setItem('token', response.token);
-          //ejemplo: this.router.navigate(['/login']); // O donde quieras redirigir
+        next: () => {
+          // Cargar carrito del backend al registrarse
+          this.store.dispatch(
+            CartActions.loadCart({ userId: this.authService.userId()! }),
+          );
+          this.router.navigate(['/products']);
         },
-        error: error => {
+        error: (error) => {
           console.error('Error en registro:', error);
-          // Mostrar mensaje de error al usuario
-        }
+        },
       });
     }
   }

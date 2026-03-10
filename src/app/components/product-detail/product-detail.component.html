@@ -68,6 +68,7 @@
           </button>
 
           <button
+            (click)="buyNow()"
             [disabled]="product()?.stock === 0"
             class="px-8 py-3 text-sm font-medium text-gray-900 bg-red-200 rounded-lg hover:bg-pink-100 transition-colors buyNow_btn"
           >

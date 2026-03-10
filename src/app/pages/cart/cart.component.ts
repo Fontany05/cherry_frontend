@@ -43,7 +43,7 @@ export class CartComponent implements OnInit {
       const savedCart = localStorage.getItem('cart_local');
       if (savedCart) {
         this.store.dispatch(
-          CartActions.loadCartSuccess({ cart: JSON.parse(savedCart) })
+          CartActions.loadCartSuccess({ cart: JSON.parse(savedCart) }),
         );
       }
     }
@@ -52,14 +52,14 @@ export class CartComponent implements OnInit {
   increaseQuantity(item: CartItem): void {
     // Enviamos el ._id que es lo que espera la Action
     this.store.dispatch(
-      CartActions.incrementQuantity({ productId: item.productId._id })
+      CartActions.incrementQuantity({ productId: item.productId._id }),
     );
   }
 
   decreaseQuantity(item: CartItem): void {
     if (item.quantity > 1) {
       this.store.dispatch(
-        CartActions.decrementQuantity({ productId: item.productId._id })
+        CartActions.decrementQuantity({ productId: item.productId._id }),
       );
     } else {
       // Si es 1, llamamos a borrar pasando el string del ID
@@ -71,16 +71,17 @@ export class CartComponent implements OnInit {
     // Aquí ya recibimos el string desde el HTML o desde decreaseQuantity
     this.store.dispatch(CartActions.removeItem({ productId }));
   }
- 
 
   goToCheckout(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/register']);
+      return;
+    }
     this.router.navigate(['/checkout']);
   }
-
-   //chequear carro, si esta vacio
+  //chequear carro, si esta vacio
   get isCartEmpty(): boolean {
-  const cart = this.cart();
-  return !cart || cart.items.length === 0;
-}
-
+    const cart = this.cart();
+    return !cart || cart.items.length === 0;
+  }
 }

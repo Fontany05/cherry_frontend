@@ -46,17 +46,18 @@ export class HeaderComponent {
 
 
 logout(): void {
-    // Borramos el token y el estado de sesión en el servicio
-    this.authService.logout(); 
-
-    // Limpiamos el carrito en el Store y LocalStorage
-    // Esto es vital para que el carrito no se quede "pegado" al cerrar sesión
-    this.store.dispatch(CartActions.clearCart());
-
-    // Redirigimos al inicio
-    this.router.navigate(['/home']);
-    
-    // Opcional: Cerrar el menú si estás en móvil
-    this.isMenuOpen = false;
-  }
+  this.authService.logout().subscribe({
+    next: () => {
+      this.store.dispatch(CartActions.clearCart());
+      this.router.navigate(['/home']);
+      this.isMenuOpen = false;
+    },
+    error: () => {
+      // Aunque falle el backend, limpiamos igual
+      this.store.dispatch(CartActions.clearCart());
+      this.router.navigate(['/home']);
+      this.isMenuOpen = false;
+    }
+  });
+}
 }
