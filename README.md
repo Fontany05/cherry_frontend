@@ -20,3 +20,23 @@ La API utilizada en este proyecto está disponible en:
 👉 https://github.com/Fontany05/cherry_backend
 
 
+
+
+---
+
+
+## 🚧 Estado del proyecto
+
+En desarrollo activo y apto para mejoras.  
+Actualmente se encuentra en etapa final, con despliegue próximo del backend y frontend.
+
+
+
+
+## 👨‍💻 Autor
+
+- Ana Fontana 
+- GitHub: https://github.com/Fontany05
+- LinkedIn: https://linkedin.com/in/tu-perfil  ](https://www.linkedin.com/in/ana-fontana-/
+
+
