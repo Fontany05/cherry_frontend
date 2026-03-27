@@ -9,20 +9,39 @@
     <div class="mt-4 text-left">
       <div class="h-2 rounded-t-md"></div>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="px-8 py-5">
-        <label class="block font-semibold"> Email </label>
+        <label class="block font-semibold">Email</label>
         <input
           formControlName="email"
           type="text"
           placeholder="Email"
           class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md shadow-xl"
+          [class.border-red-400]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
         />
-        <label class="block mt-3 font-semibold"> Password </label>
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched)
+        { @if (loginForm.get('email')?.errors?.['required']) {
+        <p class="text-red-400 text-xs mt-1">Email is required</p>
+        } @if (loginForm.get('email')?.errors?.['email']) {
+        <p class="text-red-400 text-xs mt-1">Invalid email format</p>
+        } }
+
+        <label class="block mt-3 font-semibold">Password</label>
         <input
           formControlName="password"
           type="password"
           placeholder="Password"
           class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-gray-300 focus:ring-1 rounded-md shadow-xl"
+          [class.border-red-400]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
         />
+        @if (loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.touched) { @if
+        (loginForm.get('password')?.errors?.['required']) {
+        <p class="text-red-400 text-xs mt-1">Password is required</p>
+        } @if (loginForm.get('password')?.errors?.['minlength']) {
+        <p class="text-red-400 text-xs mt-1">
+          Password must be at least 6 characters
+        </p>
+        } }
+
         <div class="flex justify-between items-baseline py-2">
           <button
             type="submit"
@@ -32,11 +51,20 @@
           </button>
           <a href="#" class="text-sm hover:underline">Forgot password?</a>
         </div>
+        @if (errorMessage()) {
+        <p class="text-red-400 text-xs mt-2 text-center">
+          {{ errorMessage() }}
+        </p>
+        }
+
         <div class="flex mt-6">
-          <a href="#" class="text-sm hover:underline"
-          [routerLink]="['/register']">Don't have an account? Create one</a
+          <a
+            href="#"
+            class="text-sm hover:underline"
+            [routerLink]="['/register']"
+            >Don't have an account? Create one</a
           >
-          </div>
+        </div>
       </form>
     </div>
   </div>

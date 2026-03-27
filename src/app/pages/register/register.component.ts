@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -21,6 +21,7 @@ import * as CartActions from 'src/app/store/cart/cart.actions';
 export class RegisterComponent {
   registerForm: FormGroup;
   private store = inject(Store);
+  errorMessage = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
@@ -28,43 +29,51 @@ export class RegisterComponent {
     private router: Router,
   ) {
     this.registerForm = this.fb.group({
-      fullName: ['', [Validators.required]],
+      fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       telephone: ['', [Validators.pattern('^[0-9]{7,15}$')]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
     });
   }
 
   onRegister() {
-    if (this.registerForm.valid) {
-      const { fullName, email, telephone, password, confirmPassword } =
-        this.registerForm.value;
-
-      if (password !== confirmPassword) {
-        alert('Las contraseñas no coinciden');
-        return;
-      }
-
-      const registerData: RegisterData = {
-        fullName,
-        email,
-        telephone,
-        password,
-      };
-
-      this.authService.signup(registerData).subscribe({
-        next: () => {
-          // Cargar carrito del backend al registrarse
-          this.store.dispatch(
-            CartActions.loadCart({ userId: this.authService.userId()! }),
-          );
-          this.router.navigate(['/products']);
-        },
-        error: (error) => {
-          console.error('Error en registro:', error);
-        },
-      });
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
     }
+
+    const { fullName, email, telephone, password, confirmPassword } =
+      this.registerForm.value;
+
+    if (password !== confirmPassword) {
+      this.errorMessage.set('Passwords do not match');
+      return;
+    }
+
+    this.errorMessage.set(null);
+
+    const registerData: RegisterData = {
+      fullName,
+      email,
+      telephone,
+      password,
+    };
+
+    this.authService.signup(registerData).subscribe({
+      next: () => {
+        this.store.dispatch(
+          CartActions.loadCart({ userId: this.authService.userId()! }),
+        );
+        this.router.navigate(['/products']);
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this.errorMessage.set('Email already in use');
+        } else {
+          this.errorMessage.set('An error occurred. Please try again.');
+        }
+      },
+    });
   }
 }

@@ -1,1 +1,90 @@
-<p>footer works!</p>
+<footer class="bg-gray-800 text-white py-10 px-12">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      <!-- Navigation -->
+      <div>
+        <h3
+          class="text-sm font-serif italic mb-4 border-b border-gray-600 pb-2"
+        >
+          Navigation
+        </h3>
+        <ul class="space-y-2">
+          <li>
+            <a
+              [routerLink]="['/home']"
+              class="text-gray-400 text-sm hover:text-white transition-colors"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              [routerLink]="['/products']"
+              class="text-gray-400 text-sm hover:text-white transition-colors"
+              >Products</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Follow us -->
+      <div>
+        <h3
+          class="text-sm font-serif italic mb-4 border-b border-gray-600 pb-2"
+        >
+          Follow us
+        </h3>
+        <div class="flex gap-4">
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            class="text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fab fa-instagram text-lg"></i>
+          </a>
+          <a
+            href="https://twitter.com/"
+            target="_blank"
+            class="text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fa-brands fa-x-twitter text-lg"></i>
+          </a>
+          <a
+            href="https://www.facebook.com/"
+            target="_blank"
+            class="text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fab fa-facebook-f text-lg"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact us -->
+      <div>
+        <h3
+          class="text-sm font-serif italic mb-4 border-b border-gray-600 pb-2"
+        >
+          Contact us
+        </h3>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="mailto:K-store&#64;Cherry.com"
+              class="text-gray-400 text-sm hover:text-white transition-colors"
+              >K-store&#64;Cherry.com</a
+            >
+          </li>
+
+          <li class="text-gray-400 text-sm">Boulevard de los pinos 789</li>
+          <li class="text-gray-400 text-sm">555-3253</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-gray-600 pt-6 text-center">
+      <p class="text-white text-xs">
+        © {{ currentYear }} Cherry. All rights reserved. Developed by AfDev
+      </p>
+    </div>
+  </div>
+</footer>

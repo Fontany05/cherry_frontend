@@ -21,6 +21,8 @@ import { selectCartData } from 'src/app/store/cart/cart.selectors';
 import * as CartActions from 'src/app/store/cart/cart.actions';
 import { Cart } from 'src/interfaces/cart.interface';
 import { ShippingAddress } from 'src/interfaces/payment.interface';
+import { UserService } from 'src/app/services/user/user.service';
+
 
 @Component({
   selector: 'app-checkout',
@@ -35,6 +37,7 @@ export class CheckoutComponent implements OnInit {
   private paymentService = inject(PaymentService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private userService = inject(UserService);
 
   // Pasos del stepper
   currentStep = signal(1);
@@ -67,18 +70,30 @@ export class CheckoutComponent implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
-    // Si no está logueado, redirigir
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/register']);
       return;
     }
 
-    // Si el carrito está vacío, redirigir
     const cart = this.cart();
     if (!cart || cart.items.length === 0) {
       this.router.navigate(['/cart']);
       return;
     }
+
+    // Cargar perfil del usuario
+    this.userService.getProfile().subscribe({
+      next: (res) => {
+        this.shippingForm.patchValue({
+          fullName: res.data.fullName || '',
+          phone: res.data.telephone || '',
+          address: res.data.address || '',
+        });
+      },
+      error: (err) => {
+        console.log('Error profile:', err.status);
+      },
+    });
 
     // Inicializar Stripe
     this.stripe = await loadStripe(environment.stripePublicKey);
@@ -94,15 +109,15 @@ export class CheckoutComponent implements OnInit {
     const cart = this.cart() as Cart;
     const shippingAddress: ShippingAddress = this.shippingForm.value;
 
-    const items = cart.items.map(item => ({
-  productId: item.productId._id,
-  name: item.productId.name,
-  brand: item.productId.brand,
-  image: item.productId.image,
-  quantity: item.quantity,
-  price: item.price,
-  subtotal: item.price * item.quantity,
-}));
+    const items = cart.items.map((item) => ({
+      productId: item.productId._id,
+      name: item.productId.name,
+      brand: item.productId.brand,
+      image: item.productId.image,
+      quantity: item.quantity,
+      price: item.price,
+      subtotal: item.price * item.quantity,
+    }));
 
     this.paymentService
       .createPaymentIntent({

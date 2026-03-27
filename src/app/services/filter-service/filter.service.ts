@@ -1,9 +1,12 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { environment } from '@environments/environment.development';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import type { FilterSidebarInterface, CategoryForHome } from 'src/interfaces/filterSidebar.interface';
+import type {
+  FilterSidebarInterface,
+  CategoryForHome,
+} from 'src/interfaces/filterSidebar.interface';
 import { Product, ProductData } from 'src/interfaces/product.inteface';
 
 @Injectable({
@@ -131,7 +134,7 @@ export class FilterService {
     }));
 
     const category = currentState.categories.find(
-      (cat) => cat.id === categoryId
+      (cat) => cat.id === categoryId,
     );
     if (categoryId !== 'brands' && !category?.hasSubcategories) {
       this.applyFilter({ category: categoryId });
@@ -263,12 +266,41 @@ export class FilterService {
 
     return categories;
   }
-  
+
   //categorias - home
   getCategoriesForHome(): CategoryForHome[] {
-  const filterState = this.filterState();
-  return filterState.categories
-    .filter(cat => cat.id !== 'brands')
-    .slice(0, 4);
-}
+    const filterState = this.filterState();
+    return filterState.categories
+      .filter((cat) => cat.id !== 'brands')
+      .slice(0, 4);
+  }
+  
+  //buscador
+  setSearch(query: string): void {
+    if (query.trim()) {
+      this.loading.set(true);
+      this.error.set(null);
+
+      let params = new HttpParams().set('search', query.trim());
+
+      this.http
+        .get<ProductData>(this.apiUrl, { params })
+        .pipe(finalize(() => this.loading.set(false)))
+        .subscribe({
+          next: (response) => {
+            if (!response.error && response.data) {
+              this.filteredProducts.set(response.data);
+            } else {
+              this.filteredProducts.set([]);
+            }
+          },
+          error: () => {
+            this.filteredProducts.set([]);
+            this.error.set('Error searching products');
+          },
+        });
+    } else {
+      this.loadAllProducts();
+    }
+  }
 }

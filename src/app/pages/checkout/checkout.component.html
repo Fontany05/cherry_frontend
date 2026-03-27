@@ -54,6 +54,7 @@
             formControlName="fullName"
             type="text"
             class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            [class.border-red-400]="shippingForm.get('fullName')?.invalid && shippingForm.get('fullName')?.touched"
           />
           @if (shippingForm.get('fullName')?.invalid &&
           shippingForm.get('fullName')?.touched) {
@@ -69,6 +70,7 @@
             formControlName="address"
             type="text"
             class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            [class.border-red-400]="shippingForm.get('address')?.invalid && shippingForm.get('address')?.touched"
           />
           @if (shippingForm.get('address')?.invalid &&
           shippingForm.get('address')?.touched) {
@@ -84,6 +86,7 @@
             formControlName="phone"
             type="text"
             class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+            [class.border-red-400]="shippingForm.get('phone')?.invalid && shippingForm.get('phone')?.touched"
           />
           @if (shippingForm.get('phone')?.invalid &&
           shippingForm.get('phone')?.touched) {
@@ -100,6 +103,7 @@
               formControlName="city"
               type="text"
               class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+              [class.border-red-400]="shippingForm.get('city')?.invalid && shippingForm.get('city')?.touched"
             />
             @if (shippingForm.get('city')?.invalid &&
             shippingForm.get('city')?.touched) {
@@ -127,6 +131,7 @@
               formControlName="zipCode"
               type="text"
               class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+              [class.border-red-400]="shippingForm.get('zipCode')?.invalid && shippingForm.get('zipCode')?.touched"
             />
             @if (shippingForm.get('zipCode')?.invalid &&
             shippingForm.get('zipCode')?.touched) {
@@ -141,6 +146,7 @@
               formControlName="country"
               type="text"
               class="w-full border border-gray-300 p-3 text-sm mt-1 focus:outline-none focus:border-pink-300"
+              [class.border-red-400]="shippingForm.get('country')?.invalid && shippingForm.get('country')?.touched"
             />
             @if (shippingForm.get('country')?.invalid &&
             shippingForm.get('country')?.touched) {
@@ -151,7 +157,7 @@
 
         <div>
           <label class="text-xs uppercase tracking-wide text-gray-600"
-            >Notas (opcional)</label
+            >Notas</label
           >
           <textarea
             formControlName="notes"

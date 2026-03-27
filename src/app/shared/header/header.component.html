@@ -104,16 +104,18 @@
         Contact
       </a>
     </div>
-
     <div class="relative mx-auto text-gray-600 lg:block hidden">
       <input
         class="border-1 border-gray-300 bg-white h-9 pl-2 pr-8 rounded-3xl text-sm focus:outline-none"
         type="search"
         name="search"
         placeholder="Search"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
       />
       <button
-        type="submit"
+        type="button"
+        (click)="onSearch()"
         class="absolute right-2 top-1/2 transform -translate-y-1/2"
       >
         <i class="fas fa-search text-red-300 text-sm"></i>

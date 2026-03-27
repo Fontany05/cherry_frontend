@@ -4,10 +4,11 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AuthService } from './services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import * as CartActions from './store/cart/cart.actions';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

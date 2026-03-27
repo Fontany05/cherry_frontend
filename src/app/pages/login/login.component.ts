@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -22,6 +22,7 @@ import * as CartActions from 'src/app/store/cart/cart.actions';
 export class LoginComponent {
   loginForm: FormGroup;
   private store = inject(Store);
+  errorMessage = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
@@ -30,29 +31,39 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const loginData: LoginData = {
-        email: this.loginForm.value.email,
-        password: this.loginForm.value.password,
-      };
-
-      this.authService.signin(loginData).subscribe({
-        next: () => {
-          // Cargar carrito del backend al loguearse
-          this.store.dispatch(
-            CartActions.loadCart({ userId: this.authService.userId()! }),
-          );
-          this.router.navigate(['/products']);
-        },
-        error: (error) => {
-          console.error('Error en login:', error);
-        },
-      });
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
+
+    this.errorMessage.set(null);
+
+    const loginData: LoginData = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
+
+    this.authService.signin(loginData).subscribe({
+      next: () => {
+        this.store.dispatch(
+          CartActions.loadCart({ userId: this.authService.userId()! }),
+        );
+        this.router.navigate(['/products']);
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          this.errorMessage.set('User not found');
+        } else if (error.status === 401) {
+          this.errorMessage.set('Invalid password');
+        } else {
+          this.errorMessage.set('An error occurred. Please try again.');
+        }
+      },
+    });
   }
 }

@@ -27,6 +27,20 @@ export class ProductListComponent {
   addedProduct = signal<Product | null>(null);
   private lastCartCount = 0;
 
+  visibleCount = signal(8);
+
+  get visibleProducts(): Product[] {
+    return this.products().slice(0, this.visibleCount());
+  }
+
+  showMore(): void {
+    this.visibleCount.update((count) => count + 8);
+  }
+
+  get hasMore(): boolean {
+    return this.visibleCount() < this.products().length;
+  }
+
   constructor() {
     // El 'effect' vigila los cambios en el Store de NgRx
     effect(() => {
@@ -62,7 +76,7 @@ export class ProductListComponent {
       CartActions.addItem({
         product,
         quantity: 1,
-      })
+      }),
     );
 
     // Opcional: si querés mostrar confirmación directamente

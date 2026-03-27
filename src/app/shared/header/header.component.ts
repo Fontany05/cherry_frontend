@@ -5,13 +5,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import { selectCartData } from 'src/app/store/cart/cart.selectors';
 import * as CartActions from 'src/app/store/cart/cart.actions';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   private authService = inject(AuthService);
@@ -24,15 +25,28 @@ export class HeaderComponent {
   // Signal para verificar autenticación
   isAuthenticated = this.authService.isAuthenticated;
 
-  // Usar el selector del Store. 
+  // Usar el selector del Store.
   // Esto hará que el contador reaccione a los Effects y al Reducer
   private cartData = this.store.selectSignal(selectCartData);
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+  
+  //buscador 
 
-  // 5. Contador inteligente basado en el Store
+  searchQuery = '';
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/products'], {
+        queryParams: { search: this.searchQuery.trim() },
+      });
+      this.searchQuery = '';
+    }
+  }
+
+  // Contador inteligente basado en el Store
   cartCount = computed(() => {
     const cart = this.cartData();
     if (!cart || !cart.items) return 0;
@@ -40,24 +54,23 @@ export class HeaderComponent {
   });
 
   goToCart(): void {
-  // Ahora permitimos que cualquiera entre a ver sus productos
-  this.router.navigate(['/cart']);
-}
+    // Ahora permitimos que cualquiera entre a ver sus productos
+    this.router.navigate(['/cart']);
+  }
 
-
-logout(): void {
-  this.authService.logout().subscribe({
-    next: () => {
-      this.store.dispatch(CartActions.clearCart());
-      this.router.navigate(['/home']);
-      this.isMenuOpen = false;
-    },
-    error: () => {
-      // Aunque falle el backend, limpiamos igual
-      this.store.dispatch(CartActions.clearCart());
-      this.router.navigate(['/home']);
-      this.isMenuOpen = false;
-    }
-  });
-}
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.store.dispatch(CartActions.clearCart());
+        this.router.navigate(['/home']);
+        this.isMenuOpen = false;
+      },
+      error: () => {
+        // Aunque falle el backend, limpiamos igual
+        this.store.dispatch(CartActions.clearCart());
+        this.router.navigate(['/home']);
+        this.isMenuOpen = false;
+      },
+    });
+  }
 }

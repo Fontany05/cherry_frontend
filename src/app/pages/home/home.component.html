@@ -4,7 +4,7 @@
   
   <app-store-services/>
   
-  <!-- 🚀 Carga solo cuando aparece en pantalla -->
+  <!-- Carga solo cuando aparece en pantalla -->
   @defer (on viewport) {
     <app-category-grid/>
   } @placeholder {
@@ -18,7 +18,7 @@
     <div class="text-center py-4 text-gray-600">Cargando categorías...</div>
   }
   
-  <!-- 🚀 Featured Products con showButtons=false -->
+  <!--Featured Products con showButtons=false -->
   @defer (on viewport) {
     <app-featured-products/>
   } @placeholder {
