@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/example',
-  stripePublicKey: 'pk_...'
+  apiUrl: 'http://localhost...',
+  stripePublicKey: 'pk...'
 };
