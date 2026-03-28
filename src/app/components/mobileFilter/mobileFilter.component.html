@@ -1,9 +1,12 @@
 @if (filterService.filterState$().isOpen) {
-<div class="fixed inset-0 z-50 lg:hidden" (click)="filterService.closeModal()">
+<div
+  class="fixed inset-0 z-50 lg:hidden flex flex-col justify-end"
+  (click)="filterService.closeModal()"
+>
   <div class="fixed inset-0 bg-black/30"></div>
 
   <div
-    class="fixed inset-x-0 bottom-0 bg-white rounded-t-2xl h-[80vh] overflow-hidden"
+    class="relative bg-white rounded-t-2xl w-full max-h-[85vh] overflow-hidden z-10"
     (click)="$event.stopPropagation()"
   >
     <div class="flex items-center justify-between p-4 border-b border-gray-200">
@@ -28,12 +31,13 @@
       </button>
     </div>
 
-    <div class="p-4 overflow-y-auto max-h-[calc(80vh-80px)]">
+    <div class="p-4 overflow-y-auto max-h-[calc(85vh-80px)]">
       @if (filterService.hasActiveFilters()) {
       <div class="bg-red-150 p-3 rounded-lg mb-4 border-pink-150">
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-600">
-            <strong>active filter:</strong> {{ filterService.activeFilterText() }}
+            <strong>active filter:</strong> {{ filterService.activeFilterText()
+            }}
           </span>
           <button
             (click)="filterService.clearAllFilters()"
@@ -49,7 +53,8 @@
         <h4 class="text-base font-medium text-gray-900 mb-4">Categories</h4>
 
         <div class="space-y-3">
-          @for (category of filterService.filterState$().categories; track category.id) {
+          @for (category of filterService.filterState$().categories; track
+          category.id) {
           <div class="relative">
             <button
               (click)="filterService.onCategoryClick(category.id)"
@@ -78,9 +83,11 @@
               }
             </button>
 
-            @if (category.hasSubcategories && filterService.filterState$().expandedCategory === category.id) {
+            @if (category.hasSubcategories &&
+            filterService.filterState$().expandedCategory === category.id) {
             <div class="mt-2 ml-4 space-y-2">
-              @for (subcategory of category.subcategories; track subcategory.id) {
+              @for (subcategory of category.subcategories; track subcategory.id)
+              {
               <button
                 (click)="filterService.onSubcategoryClick(category.id, subcategory.id)"
                 class="block w-full p-2 text-left text-sm rounded-lg border transition-colors"
