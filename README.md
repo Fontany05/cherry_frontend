@@ -20,17 +20,49 @@ La API utilizada en este proyecto está disponible en:
 👉 https://github.com/Fontany05/cherry_backend
 
 
+---
 
+## ⚙️ Tecnologías
+
+- Angular 19
+- NgRx (Store, Effects, Reducers)
+- TypeScript
+- Tailwind CSS
+- Stripe.js
+- RxJS
 
 ---
 
+## 🔑 Funcionalidades
 
-## 🚧 Estado del proyecto
+- Navegación y filtrado de productos por categoría, marca y búsqueda
+- Carrito de compras (usuario logueado y anónimo)
+- Autenticación con JWT y cookies
+- Checkout con Stripe
+- Sesión persistente al refrescar
+- Diseño responsive
 
-En desarrollo activo y apto para mejoras.  
-Actualmente se encuentra en etapa final, con despliegue próximo del backend y frontend.
+---
 
+## 🚀 Instalación
+```bash
+git clone https://github.com/Fontany05/cherry_frontend.git
+cd cherry_frontend
+npm install
+ng serve
 
+---
+
+## 📈 Apto para mejoras a futuro
+
+- Panel de administración
+- Historial de órdenes
+- Sistema de roles
+
+## 🌐 Deploy
+
+- **Frontend**: https://cherry-frontend-727x.vercel.app
+- **Backend**: https://cherry-backend-ekr9.onrender.comp
 
 
 ## 👨‍💻 Autor
@@ -38,5 +70,8 @@ Actualmente se encuentra en etapa final, con despliegue próximo del backend y f
 - Ana Fontana 
 - GitHub: https://github.com/Fontany05
 - LinkedIn: https://www.linkedin.com/in/ana-fontana-/
+- Instagram: https://www.instagram.com/afdev__/
 
+## Contacto
+- Email: anafontana822@hotmail.com
 
