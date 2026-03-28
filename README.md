@@ -61,8 +61,8 @@ ng serve
 
 ## 🌐 Deploy
 
-- **Frontend**: https://cherry-frontend-727x.vercel.app
-- **Backend**: https://cherry-backend-ekr9.onrender.comp
+- Frontend: https://cherry-frontend-727x.vercel.app
+- Backend: https://cherry-backend-ekr9.onrender.comp
 
 
 ## 👨‍💻 Autor
