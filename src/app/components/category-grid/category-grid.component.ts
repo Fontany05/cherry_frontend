@@ -15,8 +15,8 @@ export class CategoryGridComponent implements OnInit {
 
   constructor(
     private filterService: FilterService,
-    private router: Router
-  ){}
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -28,10 +28,8 @@ export class CategoryGridComponent implements OnInit {
   }
 
   onCategoryClick(category: CategoryForHome): void {
-    // filtros
-    this.filterService.onCategoryClick(category.id);
-    // Navegar a la página de productos filtrados
-    this.router.navigate(['/products']);
+    this.router.navigate(['/products'], {
+      queryParams: { category: category.id },
+    });
   }
-  
- }
+}
