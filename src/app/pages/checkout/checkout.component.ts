@@ -14,7 +14,7 @@ import {
   StripeElements,
   StripeCardElement,
 } from '@stripe/stripe-js';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { selectCartData } from 'src/app/store/cart/cart.selectors';
