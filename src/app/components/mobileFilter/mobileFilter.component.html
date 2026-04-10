@@ -1,15 +1,15 @@
 @if (filterService.filterState$().isOpen) {
 <div
-  class="fixed inset-0 z-50 lg:hidden flex flex-col justify-end"
+  class="fixed inset-0 lg:hidden flex flex-col justify-end"
   (click)="filterService.closeModal()"
 >
-  <div class="fixed inset-0 bg-black/30"></div>
+  <div class="fixed inset-0 bg-white">
 
   <div
-    class="relative bg-white rounded-t-2xl w-full max-h-[85vh] overflow-hidden z-10"
+    class="bg-white rounded-t-2xl overflow-hidden inset-0"
     (click)="$event.stopPropagation()"
   >
-    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+    <div class="flex items-center justify-between p-4 border-b border-gray-200 overflow-hidden">
       <h3 class="text-lg font-semibold text-gray-900">Filter</h3>
       <button
         (click)="filterService.closeModal()"
@@ -30,8 +30,8 @@
         </svg>
       </button>
     </div>
-
-    <div class="p-4 overflow-y-auto max-h-[calc(85vh-80px)]">
+</div>
+    <div class="p-4 overflow-y-auto">
       @if (filterService.hasActiveFilters()) {
       <div class="bg-red-150 p-3 rounded-lg mb-4 border-pink-150">
         <div class="flex items-center justify-between">
@@ -58,7 +58,7 @@
           <div class="relative">
             <button
               (click)="filterService.onCategoryClick(category.id)"
-              class="flex items-center justify-between w-full p-3 text-left rounded-lg border transition-colors"
+              class="flex items-center justify-between p-3 text-left rounded-lg border transition-colors"
               [class]="filterService.filterState$().appliedFilters.category === category.id
                       ? 'border-pink-300 bg-pink-100 text-red-300'
                       : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-100'"
@@ -108,7 +108,7 @@
       <div class="pt-4 mt-6 border-t border-gray-200">
         <button
           (click)="filterService.closeModal()"
-          class="w-full bg-red-300 text-white py-3 rounded-lg font-medium hover:bg-red-300 transition-colors"
+          class="bg-red-300 text-white py-3 font-medium px-4 py-2 rounded hover:bg-red-300 transition-colors"
         >
           Filter
         </button>
