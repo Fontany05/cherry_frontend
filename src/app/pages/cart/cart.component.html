@@ -70,7 +70,7 @@
               </div>
               <div class="flex justify-between text-xs tracking-wide text-gray-600 uppercase">
                 <span>Delivery</span>
-                <span>US$ {{ cart()?.shippingCost | number:'1.2-2' }}</span>
+                <span>{{ cart()?.shippingCost === 0 ? 'FREE' : 'US$ ' + (cart()?.shippingCost | number:'1.2-2')}}</span>
               </div>
             </div>
             <div class="border-t border-gray-400 my-8"></div>

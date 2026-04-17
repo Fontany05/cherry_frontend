@@ -183,7 +183,7 @@
           @for (item of cart()?.items; track $index) {
           <div class="flex justify-between text-xs text-gray-600">
             <span>{{ item.productId.name }} x{{ item.quantity }}</span>
-            <span>US$ {{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+            <span>{{ cart()?.shippingCost === 0 ? 'FREE' : 'US$ ' + (cart()?.shippingCost | number:'1.2-2') }}</span>
           </div>
           }
         </div>
